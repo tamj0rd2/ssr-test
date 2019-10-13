@@ -1,18 +1,14 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path')
 
-module.exports = {
-    mode: 'development',
-    target: 'node',
-    devtool: 'inline-source-map',
-    entry: {
-        server: './src/server',
-        client: './src/client'
-    },
+const isDev = process.env.NODE_ENV !== 'production'
+
+const commonConfig = {
+    mode: isDev ? 'development' : 'production',
+    devtool: isDev ? 'inline-source-map' : undefined,
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: '[name].bundle.js',
-        publicPath: 'public'
     },
     resolve: {
         extensions: ['.js', '.jsx', '.ts', '.tsx', '.json']
@@ -20,19 +16,41 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.[jt]sx?$/,
+                test: /\.tsx?$/,
                 exclude: /node_modules/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/preset-typescript', '@babel/preset-react', '@babel/preset-env']
-                    }
-                }
+                use: 'babel-loader'
             }
         ]
-    },
-    plugins: [new HtmlWebpackPlugin({
-        template: './src/server/index.html',
-        excludeChunks: ['server']
-    })]
+    }
 }
+
+const distFolder = path.resolve(__dirname, 'dist')
+
+module.exports = [
+    {
+        ...commonConfig,
+        name: 'server',
+        entry: './src/server',
+        target: 'node',
+        output: {
+            path: distFolder,
+            filename: 'server.bundle.js',
+        },
+    },
+    {
+        ...commonConfig,
+        name: 'client',
+        entry: './src/client',
+        output: {
+            path: distFolder,
+            filename: 'client.bundle.js',
+            publicPath: 'public'
+        },
+        plugins: [
+            new HtmlWebpackPlugin({
+                template: './src/template.html',
+                filename: 'template.html'
+            })
+        ]
+    }
+]
