@@ -1,11 +1,10 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path')
 
-const isDev = process.env.NODE_ENV !== 'production'
+const excludePattern = /node_modules/
 
 const commonConfig = {
-    mode: isDev ? 'development' : 'production',
-    devtool: isDev ? 'inline-source-map' : undefined,
+    mode: process.env.NODE_ENV !== 'production' ? 'production' : 'development',
+    devtool: 'inline-source-map',
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: '[name].bundle.js',
@@ -17,8 +16,13 @@ const commonConfig = {
         rules: [
             {
                 test: /\.tsx?$/,
-                exclude: /node_modules/,
+                exclude: excludePattern,
                 use: 'babel-loader'
+            },
+            {
+                test: /\.html$/,
+                exclude: excludePattern,
+                use: 'raw-loader'
             }
         ]
     }
@@ -26,31 +30,26 @@ const commonConfig = {
 
 const distFolder = path.resolve(__dirname, 'dist')
 
-module.exports = [
-    {
-        ...commonConfig,
-        name: 'server',
-        entry: './src/server',
-        target: 'node',
-        output: {
-            path: distFolder,
-            filename: 'server.bundle.js',
-        },
-    },
-    {
-        ...commonConfig,
-        name: 'client',
-        entry: './src/client',
-        output: {
-            path: distFolder,
-            filename: 'client.bundle.js',
-            publicPath: 'public'
-        },
-        plugins: [
-            new HtmlWebpackPlugin({
-                template: './src/template.html',
-                filename: 'template.html'
-            })
-        ]
+const clientConfig = {
+    ...commonConfig,
+    name: 'client',
+    entry: './src/client',
+    output: {
+        path: distFolder,
+        filename: 'client.bundle.js',
+        publicPath: '/public/'
     }
-]
+}
+
+const serverConfig = {
+    ...commonConfig,
+    name: 'server',
+    entry: './src/server',
+    target: 'node',
+    output: {
+        path: distFolder,
+        filename: 'server.bundle.js',
+    }
+}
+
+module.exports = [clientConfig, serverConfig]
