@@ -2,9 +2,11 @@ const path = require('path')
 
 const excludePattern = /node_modules/
 
+const isDev = process.env.NODE_ENV !== 'production'
+
 const commonConfig = {
-    mode: process.env.NODE_ENV !== 'production' ? 'production' : 'development',
-    devtool: 'inline-source-map',
+    mode: isDev ? 'development' : 'production',
+    devtool: isDev ? 'inline-source-map' : undefined,
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: '[name].bundle.js',

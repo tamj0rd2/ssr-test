@@ -23,7 +23,9 @@
     "babel-loader": "^8.0.6",
     "babel-plugin-styled-components": "^1.10.6",
     "clean-webpack-plugin": "^3.0.0",
+    "concurrently": "^5.0.0",
     "html-webpack-plugin": "^3.2.0",
+    "nodemon": "^1.19.3",
     "raw-loader": "^3.1.0",
     "typescript": "^3.6.4",
     "webpack": "^4.41.1",
@@ -31,10 +33,10 @@
     "webpack-dev-server": "^3.8.2"
   },
   "scripts": {
-    "build": "webpack --config webpack.config.js",
-    "prestart": "npm run build",
-    "start": "node --inspect ./dist/server.bundle.js",
-    "dev": "webpack-dev-server --open --config webpack.devserver.config.js",
+    "prestart": "NODE_ENV=production webpack --config webpack.config.js --color --progress",
+    "start": "NODE_ENV=production node --inspect ./dist/server.bundle.js",
+    "dev": "webpack-dev-server --open --config webpack.devserver.config.js --config-name client",
+    "build:server": "webpack --config webpack.config.js --config-name server --color --progress",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

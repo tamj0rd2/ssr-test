@@ -3,8 +3,11 @@ const path = require('path')
 
 const [clientConfig] = require('./webpack.config')
 
-module.exports = {
+module.exports = [{
     ...clientConfig,
+    // TODO: add hot reloading
+    mode: 'development',
+    devtool: 'inline-source-map',
     devServer: {
         openPage: 'public/index.html'
     },
@@ -14,4 +17,4 @@ module.exports = {
             inject: false
         }),
     ]
-}
+}]
