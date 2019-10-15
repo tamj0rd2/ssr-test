@@ -1,19 +1,12 @@
-import path from 'path'
-
-import express from 'express'
-import React from 'react'
-import { renderToString } from 'react-dom/server'
-import { ServerStyleSheet } from 'styled-components'
+import { ServerStyleSheet } from "styled-components"
+import { renderToString } from "react-dom/server"
+import React from "react"
 
 import App from '../client/App'
 import template from './template.html'
+import { RequestHandler } from "express"
 
-const app = express()
-const port = 3000
-
-const router = express.Router()
-
-const serverRenderer = (_, res) => {
+const renderer: RequestHandler = (_, res) => {
 
     const sheet = new ServerStyleSheet()
     try {
@@ -37,17 +30,4 @@ const serverRenderer = (_, res) => {
     }
 }
 
-router.use('^/$', serverRenderer)
-
-router.use('/api/hello', (req, res) => {
-    return res.status(200).send('Hello, from your API!')
-})
-
-router.use(
-    '/public',
-    express.static('.' + path.resolve(__dirname, '../..', 'dist'), { maxAge: '30d' })
-)
-
-app.use(router)
-
-app.listen(port, () => console.log(`App listening on port ${port}`))
+export default renderer
