@@ -14,14 +14,19 @@ const compiler = webpack(webpackConfig)
 if (process.env.NODE_ENV === 'production') {
     console.log('COMPILING THE PROD VERSION')
     compiler.run((err, stats) => {
-        console.dir('err:', err)
-        console.dir('stats:', stats)
+        if (err) {
+            throw err
+        }
+
+        if (stats) {
+            console.dir('stats:', stats)
+        }
     })
 } else {
     console.log('USING DEV MIDDLEWARE')
     
     app.use(devMiddleware(compiler, {
-        publicPath: '/public/',
+        publicPath: webpackConfig.output.publicPath,
     }))
 }
 

@@ -1,11 +1,17 @@
 import { resolveFromRoot } from "./helper"
-import { Configuration } from "webpack"
+import { Configuration, Output } from "webpack"
 
 const excludePattern = /node_modules/
 
 const isProd = process.env.NODE_ENV === 'production'
 
-const config: Configuration = {
+interface WebpackConfig extends Configuration {
+    output: Output & {
+        publicPath: string
+    }
+}
+
+const config: WebpackConfig = {
     mode: isProd ? 'production' : 'development',
     devtool: isProd ? undefined : 'inline-source-map',
     entry: resolveFromRoot('src', 'client'),
