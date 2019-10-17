@@ -2,7 +2,12 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
 
-const hydrateApp = () => ReactDOM.hydrate(<App />, document.getElementById('root'))
+const hydrateApp = () => {
+  const theStuff = (window as any).__INITIAL_DATA__ as string
+  console.log(theStuff)
+  ReactDOM.hydrate(<App data={theStuff ? JSON.parse(theStuff) : undefined} />, document.getElementById('root'))
+}
+
 hydrateApp()
 
 if (module.hot) {

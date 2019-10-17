@@ -1,15 +1,21 @@
 import React from 'react'
-import styled from 'styled-components'
 
-const Container = styled.div`
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-`
+const Header = () => <div>Header</div>
+const Footer = () => <div>Footer</div>
 
-export default function App() {
+interface AppProps {
+  data: {}
+}
+
+const App: React.FC<AppProps> = ({ children, data }) => {
   return (
-    <Container>
-      <h1>Hello, world! (from App.ts)</h1>
-      <button onClick={() => alert(':D')}>Push me!</button>
-    </Container>
+    <>
+      <div></div>
+      <Header />
+      {children}
+      <Footer />
+    </>
   )
 }
+
+export default App

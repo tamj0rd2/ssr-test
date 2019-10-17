@@ -2,9 +2,9 @@ import path from 'path'
 import { existsSync } from 'fs'
 
 if (!existsSync(resolveFromRoot('package.json'))) {
-    throw new Error('You need to run yarn dev/start from the project root to avoid path resolution issues')
+  throw new Error('yarn dev/start needs to be run from the project root to avoid path resolution issues')
 }
 
 export function resolveFromRoot(...args: string[]): string {
-    return path.resolve(process.cwd(), ...args)
+  return path.resolve(process.cwd(), ...args)
 }

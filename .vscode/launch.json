@@ -1,27 +1,22 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Launch Program",
-            "program": "${workspaceFolder}/src/server/index.ts",
-            "outFiles": [
-                "${workspaceFolder}/dist/**/*.js",
-                "${workspaceFolder}/dist/**/*.jsx"
-            ],
-            "sourceMaps": true,
-            "runtimeArgs": ["--nolazy"],
-            "skipFiles": [
-                "<node_internals>",
-                "${workspaceFolder}/node_modules"
-            ],
-            "env": {
-                "PROJECT_ROOT": "/Users/tamaraj/Development/ssr-test"
-            }
-        }
-    ]
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Program",
+      "program": "${workspaceFolder}/src/server/index.ts",
+      "outFiles": ["${workspaceFolder}/dist/**/*.js", "${workspaceFolder}/dist/**/*.jsx"],
+      "sourceMaps": true,
+      "preLaunchTask": "build:dev",
+      "runtimeArgs": ["--nolazy"],
+      "skipFiles": ["<node_internals>", "${workspaceFolder}/node_modules"],
+      "env": {
+        "PROJECT_ROOT": "/Users/tamaraj/Development/ssr-test"
+      }
+    }
+  ]
 }

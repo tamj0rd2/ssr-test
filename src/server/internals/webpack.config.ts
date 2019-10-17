@@ -1,4 +1,4 @@
-import { resolveFromRoot } from './helper'
+import { resolveFromRoot } from './helpers'
 import webpack from 'webpack'
 
 const excludePattern = /node_modules/
