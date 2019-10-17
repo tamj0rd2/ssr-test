@@ -1,33 +1,38 @@
 import express from 'express'
-import createRouter from './router'
-import devMiddleware from 'webpack-dev-middleware'
+import webpackDevMiddleware from 'webpack-dev-middleware'
+import webpackHotMiddleware from 'webpack-hot-middleware'
 import webpack from 'webpack'
 import createRenderer from './renderer'
-import webpackConfig from './webpack.config'
+import createClientConfig from './webpack.config'
 import { resolveFromRoot } from './helper'
-import { resolve } from 'path'
 
 const app = express()
 const port = 3000
 
-const compiler = webpack(webpackConfig)
+const clientConfig = createClientConfig(process.env.NODE_ENV === 'production')
+const compiler = webpack(clientConfig)
+
 if (process.env.NODE_ENV === 'production') {
-    console.log('COMPILING THE PROD VERSION')
-    compiler.run((err, stats) => {
-        console.dir('err:', err)
-        console.dir('stats:', stats)
-    })
+  console.log('COMPILING THE PROD VERSION')
+  compiler.run((err, stats) => {
+    console.dir('err:', err)
+    console.dir('stats:', stats)
+  })
 } else {
-    console.log('USING DEV MIDDLEWARE')
-    
-    app.use(devMiddleware(compiler, {
-        publicPath: '/public/',
-    }))
+  console.log('USING DEV MIDDLEWARE')
+
+  app.use(
+    webpackDevMiddleware(compiler, {
+      publicPath: clientConfig.output.publicPath,
+    }),
+  )
+
+  app.use(webpackHotMiddleware(compiler))
 }
 
 app.get('^/$', createRenderer())
-app.get('/hello', (req, res) => res.status(200).send('yo!'))
-
 app.use('/public', express.static(resolveFromRoot('dist', 'public'), { maxAge: '30d' }))
 
 app.listen(port, () => console.log(`App listening on port ${port}`))
+
+// TODO: everywhere, use import() for things that may/may not get imported based on env
