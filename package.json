@@ -4,8 +4,8 @@
   "description": "",
   "private": true,
   "scripts": {
-    "dev": "gulp && node --inspect ./dist/src/server/index.js",
-    "start": "gulp && NODE_ENV=production  node ./dist/src/server/index.js"
+    "start": "./scripts/build-server.sh && NODE_ENV=production node ./dist/server/index.js",
+    "dev": "./scripts/build-server.sh --source-maps inline && node --inspect ./dist/server/index.js"
   },
   "dependencies": {
     "express": "^4.17.1",
@@ -19,7 +19,7 @@
     "@babel/preset-env": "^7.6.3",
     "@babel/preset-react": "^7.6.3",
     "@babel/preset-typescript": "^7.6.0",
-    "@babel/register": "^7.6.2",
+    "@types/del": "^4.0.0",
     "@types/express": "^4.17.1",
     "@types/html-webpack-plugin": "^3.2.1",
     "@types/is-object": "^1.0.0",
@@ -28,13 +28,15 @@
     "@types/react-dom": "^16.9.1",
     "@types/styled-components": "4.1.8",
     "@types/webpack-dev-middleware": "^2.0.3",
+    "@types/webpack-env": "^1.14.1",
+    "@types/webpack-hot-middleware": "^2.16.5",
     "babel-loader": "^8.0.6",
     "babel-plugin-styled-components": "^1.10.6",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-typescript": "^7.0.0-alpha.19",
     "clean-webpack-plugin": "^3.0.0",
     "del": "^5.1.0",
-    "gulp": "^4.0.2",
-    "gulp-babel": "^8.0.0-beta.2",
-    "gulp-sourcemaps": "^2.6.5",
     "html-webpack-plugin": "^3.2.0",
     "is-object": "^1.0.1",
     "merge-stream": "^2.0.0",
@@ -44,7 +46,8 @@
     "webpack": "^4.41.1",
     "webpack-cli": "^3.3.9",
     "webpack-dev-middleware": "^3.7.2",
-    "webpack-dev-server": "^3.8.2"
+    "webpack-dev-server": "^3.8.2",
+    "webpack-hot-middleware": "^2.25.0"
   },
   "keywords": [],
   "author": "tamj0rd2",

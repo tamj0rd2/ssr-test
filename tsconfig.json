@@ -1,23 +1,14 @@
 {
-    "compilerOptions": {
-        "typeRoots": [
-            "node_modules/@types",
-            "src/typings"
-        ],
-        "rootDir": "./",
-        "allowSyntheticDefaultImports": true,
-        "esModuleInterop": true,
-        "jsx": "preserve",
-        "strict": true,
-        "noImplicitAny": true,
-        "noEmit": true,
-        "skipLibCheck": false
-    },
-    "include": [
-        "src/**/*"
-    ],
-    "exclude": [
-        "node_modules",
-        "dist"
-    ]
+  "compilerOptions": {
+    "typeRoots": ["node_modules/@types"],
+    "rootDir": "./",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "jsx": "preserve",
+    "strict": true,
+    "noImplicitAny": true,
+    "noEmit": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }
