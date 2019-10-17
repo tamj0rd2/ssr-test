@@ -1,6 +1,6 @@
-import path from 'path'
 import express from 'express'
 import renderer from './renderer'
+import { resolveFromRoot } from './helper'
 
 export default function createRouter() {
     const router = express.Router()
@@ -13,7 +13,7 @@ export default function createRouter() {
 
     router.use(
         '/public',
-        express.static('.' + path.resolve(__dirname, '../..', 'dist'), { maxAge: '30d' })
+        express.static('.' + resolveFromRoot('../..', 'dist'), { maxAge: '30d' })
     )
 
     return router
