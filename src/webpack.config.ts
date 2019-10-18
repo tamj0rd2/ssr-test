@@ -30,11 +30,6 @@ const clientConfig: WebpackConfig = {
         exclude: excludePattern,
         use: 'babel-loader',
       },
-      {
-        test: /\.html$/,
-        exclude: excludePattern,
-        use: 'raw-loader',
-      },
     ],
   },
   plugins: [],

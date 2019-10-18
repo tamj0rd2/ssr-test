@@ -10,12 +10,14 @@ import { RequestHandler } from 'express'
 const createRenderer = (): RequestHandler => {
   const template = readFileSync(resolve(__dirname, 'template.html')).toString()
 
-  return (_, res) => {
+  return (_, res, next) => {
     const sheet = new ServerStyleSheet()
     try {
       const componentMarkup = renderToString(sheet.collectStyles(<App />))
       const styleTags = sheet.getStyleTags()
       sheet.seal()
+
+      throw new Error('testing testing')
 
       // we could use some cool templating thingy instead
       const html = template
@@ -24,7 +26,7 @@ const createRenderer = (): RequestHandler => {
 
       return res.send(html)
     } catch (err) {
-      return res.status(500).send('Error loading styles')
+      next(err)
     }
   }
 }
