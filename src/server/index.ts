@@ -3,22 +3,15 @@ import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
 import webpack from 'webpack'
 import createRenderer from './renderer'
-import createClientConfig from './webpack.config'
+import clientConfig from '../webpack.config'
 import { resolveFromRoot } from './helper'
 
 const app = express()
 const port = 3000
 
-const clientConfig = createClientConfig(process.env.NODE_ENV === 'production')
 const compiler = webpack(clientConfig)
 
-if (process.env.NODE_ENV === 'production') {
-  console.log('COMPILING THE PROD VERSION')
-  compiler.run((err, stats) => {
-    console.dir('err:', err)
-    console.dir('stats:', stats)
-  })
-} else {
+if (process.env.NODE_ENV !== 'production') {
   console.log('USING DEV MIDDLEWARE')
 
   app.use(
