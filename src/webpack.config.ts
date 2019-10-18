@@ -12,12 +12,12 @@ type WebpackConfig = Partial<webpack.Configuration> & {
 }
 
 const clientConfig: WebpackConfig = {
-  name: 'client',
   mode: 'production',
   entry: [resolveFromRoot('src', 'client')],
   output: {
     path: resolveFromRoot('dist', 'public'),
     filename: 'client.bundle.js',
+    chunkFilename: '[name].bundle.js',
     publicPath: '/public/',
   },
   resolve: {
@@ -33,6 +33,11 @@ const clientConfig: WebpackConfig = {
     ],
   },
   plugins: [],
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+    },
+  },
 }
 
 if (process.env.NODE_ENV !== 'production') {
