@@ -1,7 +1,4 @@
 import express from 'express'
-import webpackDevMiddleware from 'webpack-dev-middleware'
-import webpackHotMiddleware from 'webpack-hot-middleware'
-import webpack from 'webpack'
 import createRenderer from './renderer'
 import clientConfig from '../webpack.config'
 import { resolveFromRoot } from './helper'
@@ -9,10 +6,14 @@ import { resolveFromRoot } from './helper'
 const app = express()
 const port = 3000
 
-const compiler = webpack(clientConfig)
-
 if (process.env.NODE_ENV !== 'production') {
-  console.log('USING DEV MIDDLEWARE')
+  console.log('Starting server in DEV mode')
+
+  const webpack = require('webpack')
+  const webpackDevMiddleware = require('webpack-dev-middleware')
+  const webpackHotMiddleware = require('webpack-hot-middleware')
+
+  const compiler = webpack(clientConfig)
 
   app.use(
     webpackDevMiddleware(compiler, {
@@ -27,5 +28,3 @@ app.get('^/$', createRenderer())
 app.use('/public', express.static(resolveFromRoot('dist', 'public'), { maxAge: '30d' }))
 
 app.listen(port, () => console.log(`App listening on port ${port}`))
-
-// TODO: everywhere, use import() for things that may/may not get imported based on env

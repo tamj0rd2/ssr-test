@@ -6,7 +6,7 @@ const Container = styled.div`
 `
 
 // TODO: get this working with some initial data. Maybe add react router
-export default function App() {
+const App: React.FC = () => {
   return (
     <Container>
       <h1>Hello, world! (from App.ts)</h1>
@@ -14,3 +14,5 @@ export default function App() {
     </Container>
   )
 }
+
+export default App

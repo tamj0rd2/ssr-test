@@ -1,8 +1,8 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import { hydrate } from 'react-dom'
 import App from './App'
 
-const hydrateApp = () => ReactDOM.hydrate(<App />, document.getElementById('root'))
+const hydrateApp = () => hydrate(<App />, document.getElementById('root'))
 hydrateApp()
 
 if (module.hot) {
