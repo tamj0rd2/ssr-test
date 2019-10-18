@@ -17,9 +17,8 @@ const createRenderer = (): RequestHandler => {
       const styleTags = sheet.getStyleTags()
       sheet.seal()
 
-      throw new Error('testing testing')
-
       // we could use some cool templating thingy instead
+      // TODO: could use res.render to render an actual template with some options
       const html = template
         .replace('<style></style>', styleTags || '')
         .replace('<div id="root"></div>', `<div id="root">${componentMarkup}</div>`)
