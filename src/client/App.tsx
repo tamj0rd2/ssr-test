@@ -1,18 +1,40 @@
 import React from 'react'
 import styled from 'styled-components'
+import Content, { ContentProps } from './Content'
+import ErrorPage, { ErrorPageProps } from './Error'
+
+export type AppProps = ErrorPageProps | ContentProps
+
+const App: React.FC<AppProps> = props => {
+  const PageContent = () =>
+    'errorStatusCode' in props ? <ErrorPage {...props} /> : <Content {...props} />
+
+  return (
+    <Container>
+      <Header />
+      <PageContent />
+      <Footer />
+    </Container>
+  )
+}
 
 const Container = styled.div`
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 `
 
-// TODO: get this working with some initial data. Maybe add react router
-const App: React.FC = () => {
-  return (
-    <Container>
-      <h1>Hello, world! (from App.ts)</h1>
-      <button onClick={() => alert(':D')}>Push me!</button>
-    </Container>
-  )
-}
+const Header = () => (
+  <ul>
+    <li>
+      <a href="/">Go to main app page</a>
+    </li>
+    <li>
+      <a href="/500">Go to a 500 error page</a>
+    </li>
+    <li>
+      <a href="/404">Go to a 404 error page</a>
+    </li>
+  </ul>
+)
+const Footer = () => <p>A super informative footer</p>
 
 export default App

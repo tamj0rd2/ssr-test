@@ -1,15 +1,18 @@
 import React from 'react'
 import { hydrate } from 'react-dom'
-import App from './App'
+import App, { AppProps } from './App'
 
-const hydrateApp = () => hydrate(<App />, document.getElementById('root'))
-hydrateApp()
+declare global {
+  interface Window {
+    __INITIAL_PROPS__: AppProps
+  }
+}
+
+const hydrateApp = () =>
+  hydrate(<App {...window.__INITIAL_PROPS__} />, document.getElementById('root'))
 
 if (module.hot) {
   module.hot.accept('./App', hydrateApp)
 }
 
-// TODO: figure out the gotchas https://webpack.js.org/guides/hot-module-replacement/#gotchas
-// TODO: fix the warning about text mismatch after reloading page
-// TODO: fix event handlers
-// TODO: figure out debugging the server >:(
+hydrateApp()
