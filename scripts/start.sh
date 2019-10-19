@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e -o pipefail
 
-if [[ "$1" == '--prod' ]];
+if [[ "$NODE_ENV" == 'production' ]];
     then {
         echo 'STARTING PRODUCTION'
         NODE_ENV=production node ./dist/server/index.js

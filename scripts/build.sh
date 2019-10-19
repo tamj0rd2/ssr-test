@@ -8,10 +8,10 @@ npx copyfiles ./src/**/*.html ./dist -u 1
 echo 'Success: Raw files copied'
 echo
 
-if [[ "$1" == '--prod' ]];
+if [[ "$NODE_ENV" == 'production' ]];
     then {
         echo 'BUILDING FOR PRODUCTION'
-        ./node_modules/.bin/webpack --color --progress --config ./src/webpack.config.ts --env.production
+        ./node_modules/.bin/webpack --color --progress --config ./src/config/webpack.prod.ts --env.isProd=true
         npx babel src --out-dir dist --extensions .ts,.tsx
     };
     else {

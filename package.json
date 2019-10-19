@@ -4,8 +4,8 @@
   "description": "",
   "private": true,
   "scripts": {
-    "build": "./scripts/build.sh --prod",
-    "start": "./scripts/start.sh --prod",
+    "build": "NODE_ENV=production ./scripts/build.sh",
+    "start": "NODE_ENV=production ./scripts/start.sh",
     "dev": "./scripts/build.sh && ./scripts/start.sh"
   },
   "dependencies": {
@@ -31,6 +31,7 @@
     "@types/webpack-dev-middleware": "^2.0.3",
     "@types/webpack-env": "^1.14.1",
     "@types/webpack-hot-middleware": "^2.16.5",
+    "@types/webpack-merge": "^4.1.5",
     "babel-loader": "^8.0.6",
     "babel-plugin-styled-components": "^1.10.6",
     "clear-module": "^4.0.0",
@@ -44,7 +45,8 @@
     "webpack-cli": "^3.3.9",
     "webpack-dev-middleware": "^3.7.2",
     "webpack-dev-server": "^3.8.2",
-    "webpack-hot-middleware": "^2.25.0"
+    "webpack-hot-middleware": "^2.25.0",
+    "webpack-merge": "^4.2.2"
   },
   "keywords": [],
   "author": "tamj0rd2",
