@@ -4,15 +4,19 @@ set -e -o pipefail
 rm -rf ./dist
 echo 'Success: Dist cleaned'
 
-if [[ "$1" == "--dev" ]];
+npx copyfiles ./src/**/*.html ./dist -u 1
+echo 'Success: Raw files copied'
+echo
+
+if [[ "$1" == '--prod' ]];
     then {
-        echo 'Building for DEVELOPMENT'
-        npx babel src --out-dir dist --extensions .ts,.tsx --copy-files --source-maps inline
+        echo 'BUILDING FOR PRODUCTION'
+        ./node_modules/.bin/webpack --color --progress --config ./src/webpack.config.ts --env.production
+        npx babel src --out-dir dist --extensions .ts,.tsx
     };
     else {
-        echo 'Building for PRODUCTION'
-        ./node_modules/.bin/webpack --color --progress --config ./src/webpack.config.ts
-        npx babel src --out-dir dist --extensions .ts,.tsx --copy-files
+        echo 'BUILDING FOR DEVELOPMENT'
+        npx babel src --out-dir dist --extensions .ts,.tsx --source-maps inline --ignore "src/client/**/*"
     };
 fi
 

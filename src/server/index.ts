@@ -4,15 +4,30 @@ import { resolveFromRoot } from './helper'
 import createRouter from './middleware/router'
 import { readFileSync } from 'fs'
 import { resolve } from 'path'
+import App from '../client/App'
 
-const app = express()
-const port = 3000
+const configureApp = async (isDev: boolean) => {
+  const app = express()
+  const port = 3000
 
-function configureApp() {
+  let getApp = () => App
+
+  if (isDev) {
+    const { devMiddleware, hotMiddleware } = await import('./middleware/webpack')
+    app.use(devMiddleware)
+    app.use(hotMiddleware)
+
+    const clearModule = (await import('clear-module')).default
+    getApp = () => {
+      clearModule.match(/\/client\/App/)
+      return require('../client/App').default
+    }
+  }
+
   app.use('/public', express.static(resolveFromRoot('dist', 'public'), { maxAge: '30d' }))
 
   const template = readFileSync(resolve(__dirname, 'template.html')).toString()
-  const markupThingy = new MarkupThingy(template)
+  const markupThingy = new MarkupThingy(template, getApp)
 
   app.use(createRouter(markupThingy))
 
@@ -29,12 +44,4 @@ function configureApp() {
   app.listen(port, () => console.log(`App listening on port ${port}`))
 }
 
-if (process.env.NODE_ENV === 'production') {
-  configureApp()
-} else {
-  import('./middleware/webpack').then(({ devMiddleware, hotMiddleware }) => {
-    app.use(devMiddleware)
-    app.use(hotMiddleware)
-    configureApp()
-  })
-}
+configureApp(process.env.NODE_ENV !== 'production')

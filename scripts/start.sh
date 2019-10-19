@@ -1,0 +1,15 @@
+#!/bin/bash
+set -e -o pipefail
+
+if [[ "$1" == '--prod' ]];
+    then {
+        echo 'STARTING PRODUCTION'
+        NODE_ENV=production node ./dist/server/index.js
+    };
+    else {
+        echo 'STARTING DEVELOPMENT'
+        npx concurrently \
+            'babel src/client --out-dir dist/client --extensions .ts,.tsx --source-maps inline --watch' \
+            'wait-on ./dist/server/index.js && node --inspect ./dist/server/index.js'
+    };
+fi
