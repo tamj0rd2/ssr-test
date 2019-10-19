@@ -12,7 +12,7 @@ class MarkupThingy {
     this.getAppComponent = getAppComponent
   }
 
-  public async createAppMarkup(props: AppProps) {
+  public async createAppMarkup(props: AppProps, scriptNames: string[] = []) {
     const sheet = new ServerStyleSheet()
     const AppComponent = await this.getAppComponent()
     const componentMarkup = renderToString(sheet.collectStyles(<AppComponent {...props} />))
@@ -22,13 +22,20 @@ class MarkupThingy {
     const html = this.template
       .replace('{title}', 'My super cool app')
       .replace('{styles}', styleTags || '')
+      .replace('{reactRoot}', `<div id="root">${componentMarkup}</div>`)
       .replace(
         '{initialProps}',
-        `<script>window.__INITIAL_PROPS__ = ${JSON.stringify(props)}</script>`,
+        this.createScriptTag(false, `window.__INITIAL_PROPS__ = ${JSON.stringify(props)}`),
       )
-      .replace('{reactRoot}', `<div id="root">${componentMarkup}</div>`)
+      .replace('{scripts}', scriptNames.map(name => this.createScriptTag(true, name)).join())
 
     return html
+  }
+
+  private createScriptTag(isSrc: boolean, value: string): string {
+    return isSrc
+      ? `<script type="text/javascript" src="/public/${value}"></script>`
+      : `<script type="text/javascript">${value}</script>`
   }
 }
 

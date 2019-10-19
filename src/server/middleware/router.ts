@@ -8,7 +8,7 @@ const createRouter = (markupThingy: MarkupThingy): Router => {
     let markup: string
 
     try {
-      markup = await markupThingy.createAppMarkup({ greeting: 'Yo!' })
+      markup = await markupThingy.createAppMarkup({ greeting: 'Yo!' }, res.locals.bundlesToLoad)
     } catch (err) {
       return next(err)
     }

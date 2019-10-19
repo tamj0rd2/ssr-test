@@ -2,6 +2,7 @@ import { RequestHandler } from 'express'
 import webpack from 'webpack'
 import config from '../../config/webpack.dev'
 import { resolveFromRoot } from '../helper'
+import { Response } from 'express-serve-static-core'
 
 const getWebpackMiddlewares = async (isDev: boolean) => {
   const devMiddlewares: RequestHandler[] = []
@@ -14,8 +15,16 @@ const getWebpackMiddlewares = async (isDev: boolean) => {
 
     const devMiddleware = webpackDevMiddleware(compiler, {
       publicPath: config!.output!.publicPath!,
+      serverSideRender: true,
     })
+
     const hotMiddleware = webpackHotMiddleware(compiler)
+
+    const chunksMiddleware: RequestHandler = (req, res: Response, next) => {
+      res.locals.bundlesToLoad = Object.values(res.locals.webpackStats.toJson().assetsByChunkName)
+      console.log(res.locals.bundlesToLoad)
+      next()
+    }
 
     const clientRoot = resolveFromRoot('dist', 'client')
     const clientJsDecacheMiddleware: RequestHandler = (req, res, next) => {
@@ -27,14 +36,10 @@ const getWebpackMiddlewares = async (isDev: boolean) => {
       next()
     }
 
-    devMiddlewares.push(devMiddleware, hotMiddleware, clientJsDecacheMiddleware)
+    devMiddlewares.push(devMiddleware, hotMiddleware, chunksMiddleware, clientJsDecacheMiddleware)
   }
 
-  const statsMiddleware: RequestHandler = (req, res, next) => {
-    next()
-  }
-
-  return [...devMiddlewares, statsMiddleware]
+  return [...devMiddlewares]
 }
 
 export default getWebpackMiddlewares

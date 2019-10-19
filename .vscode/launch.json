@@ -15,18 +15,6 @@
       "sourceMaps": true,
       "skipFiles": ["<node_internals>/**/*.js", "${workspaceFolder}/node_modules/**/*.js"],
       "console": "integratedTerminal"
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Launch Program",
-      "program": "${workspaceFolder}/src/server/index.ts",
-      "outFiles": ["${workspaceFolder}/dist/**/*.js", "${workspaceFolder}/dist/**/*.jsx"],
-      "sourceMaps": true,
-      "runtimeArgs": ["--nolazy"],
-      "skipFiles": ["<node_internals>", "${workspaceFolder}/node_modules"],
-      "preLaunchTask": "Build dev",
-      "stopOnEntry": true
     }
   ]
 }

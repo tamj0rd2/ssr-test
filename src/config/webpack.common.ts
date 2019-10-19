@@ -8,6 +8,7 @@ const config: webpack.Configuration = {
   output: {
     path: resolveFromRoot('dist', 'public'),
     filename: 'client.bundle.js',
+    chunkFilename: '[name].chunk.js',
     publicPath: '/public/',
   },
   resolve: {
@@ -21,6 +22,11 @@ const config: webpack.Configuration = {
         use: 'babel-loader',
       },
     ],
+  },
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+    },
   },
 }
 
