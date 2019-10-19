@@ -5,40 +5,33 @@ import createRouter from './middleware/router'
 import { readFileSync } from 'fs'
 import { resolve } from 'path'
 import App from '../client/App'
+import getWebpackMiddlewares from './middleware/webpack'
 
 const configureApp = async (isDev: boolean) => {
   const app = express()
   const port = 3000
 
-  let getApp = () => App
-
-  if (isDev) {
-    const { devMiddleware, hotMiddleware } = await import('./middleware/webpack')
-    app.use(devMiddleware)
-    app.use(hotMiddleware)
-
-    const clearModule = (await import('clear-module')).default
-    getApp = () => {
-      clearModule.match(/\/client\/App/)
-      return require('../client/App').default
-    }
-  }
+  const webpackMiddlewares = await getWebpackMiddlewares(isDev)
+  webpackMiddlewares.forEach(middleware => app.use(middleware))
 
   app.use('/public', express.static(resolveFromRoot('dist', 'public'), { maxAge: '30d' }))
 
   const template = readFileSync(resolve(__dirname, 'template.html')).toString()
-  const markupThingy = new MarkupThingy(template, getApp)
+  const markupThingy = new MarkupThingy(
+    template,
+    isDev ? async () => (await import('../client/App')).default : async () => App,
+  )
 
   app.use(createRouter(markupThingy))
 
-  app.use(<ErrorRequestHandler>function(err, req, res, next) {
+  app.use(<ErrorRequestHandler>async function(err, req, res, next) {
     return res.headersSent
       ? next(err)
-      : res.status(500).send(markupThingy.createAppMarkup({ errorStatusCode: 500 }))
+      : res.status(500).send(await markupThingy.createAppMarkup({ errorStatusCode: 500 }))
   })
 
-  app.use((_, res) => {
-    res.status(404).send(markupThingy.createAppMarkup({ errorStatusCode: 404 }))
+  app.use(async (_, res) => {
+    res.status(404).send(await markupThingy.createAppMarkup({ errorStatusCode: 404 }))
   })
 
   app.listen(port, () => console.log(`App listening on port ${port}`))

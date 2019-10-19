@@ -4,11 +4,11 @@ import MarkupThingy from '../markup-thingy'
 const createRouter = (markupThingy: MarkupThingy): Router => {
   const router = Router()
 
-  router.get('^/$', (req, res, next) => {
+  router.get('^/$', async (req, res, next) => {
     let markup: string
 
     try {
-      markup = markupThingy.createAppMarkup({ greeting: 'Yo!' })
+      markup = await markupThingy.createAppMarkup({ greeting: 'Yo!' })
     } catch (err) {
       return next(err)
     }

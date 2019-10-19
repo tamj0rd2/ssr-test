@@ -7,6 +7,18 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "Launch via NPM",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run-script", "dev"],
+      "port": 9229,
+      // "preLaunchTask": "Build dev",
+      "sourceMaps": true,
+      "skipFiles": ["<node_internals>/**/*.js", "${workspaceFolder}/node_modules/**/*.js"],
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "Launch Program",
       "program": "${workspaceFolder}/src/server/index.ts",
       "outFiles": ["${workspaceFolder}/dist/**/*.js", "${workspaceFolder}/dist/**/*.jsx"],
@@ -14,9 +26,7 @@
       "runtimeArgs": ["--nolazy"],
       "skipFiles": ["<node_internals>", "${workspaceFolder}/node_modules"],
       "preLaunchTask": "Build dev",
-      "env": {
-        "PROJECT_ROOT": "/Users/tamaraj/Development/ssr-test"
-      }
+      "stopOnEntry": true
     }
   ]
 }

@@ -7,11 +7,11 @@ const config = merge(common, {
     chunkFilename: '[name].chunk.js',
   },
   // TODO: probably need to add some stats for these. middleware and stuff
-  optimization: {
-    splitChunks: {
-      chunks: 'all',
-    },
-  },
+  // optimization: {
+  //   splitChunks: {
+  //     chunks: 'all',
+  //   },
+  // },
   stats: {
     chunks: true,
   },

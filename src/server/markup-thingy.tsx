@@ -5,16 +5,16 @@ import App, { AppProps } from '../client/App'
 
 class MarkupThingy {
   private readonly template: string
-  private readonly getAppComponent: () => React.FunctionComponent<AppProps>
+  private readonly getAppComponent: () => Promise<typeof App>
 
-  constructor(template: string, getApp: () => typeof App) {
+  constructor(template: string, getAppComponent: () => Promise<typeof App>) {
     this.template = template
-    this.getAppComponent = getApp
+    this.getAppComponent = getAppComponent
   }
 
-  public createAppMarkup(props: AppProps) {
+  public async createAppMarkup(props: AppProps) {
     const sheet = new ServerStyleSheet()
-    const AppComponent = this.getAppComponent()
+    const AppComponent = await this.getAppComponent()
     const componentMarkup = renderToString(sheet.collectStyles(<AppComponent {...props} />))
     const styleTags = sheet.getStyleTags()
     sheet.seal()
