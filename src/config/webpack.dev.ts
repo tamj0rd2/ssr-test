@@ -2,7 +2,7 @@ import merge from 'webpack-merge'
 import common from './webpack.common'
 import webpack from 'webpack'
 
-const config: webpack.Configuration = merge(common, {
+const config = merge(common, {
   mode: 'development',
   devtool: 'inline-source-map',
   entry: ['webpack-hot-middleware/client'],

@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "typeRoots": ["node_modules/@types"],
+    "typeRoots": ["node_modules/@types", "src"],
     "rootDir": "./",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,

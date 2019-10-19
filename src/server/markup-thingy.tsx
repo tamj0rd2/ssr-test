@@ -27,6 +27,7 @@ class MarkupThingy {
         '{initialProps}',
         this.createScriptTag(false, `window.__INITIAL_PROPS__ = ${JSON.stringify(props)}`),
       )
+      // TODO: why isn't each bundle just require what it needs instead of making me add it myself?
       .replace('{scripts}', scriptNames.map(name => this.createScriptTag(true, name)).join())
 
     return html
