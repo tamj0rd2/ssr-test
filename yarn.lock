@@ -897,6 +897,13 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
+"@types/loadable__component@^5.10.0":
+  version "5.10.0"
+  resolved "https://registry.yarnpkg.com/@types/loadable__component/-/loadable__component-5.10.0.tgz#178fdc401983f4f93647fac778226da7b8c1e080"
+  integrity sha512-AaDP1VxV3p7CdPOtOTl3ALgQ6ES4AxJKO9UGj9vJonq/w2yERxwdzFiWNQFh9fEDXEzjxujBlM2RmSJtHV1/pA==
+  dependencies:
+    "@types/react" "*"
+
 "@types/loadable__server@^5.9.1":
   version "5.9.1"
   resolved "https://registry.yarnpkg.com/@types/loadable__server/-/loadable__server-5.9.1.tgz#f642704664ae1ff107817d6a8a6fd4ea91e3e3ac"

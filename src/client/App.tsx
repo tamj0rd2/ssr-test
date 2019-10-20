@@ -1,13 +1,21 @@
 import React from 'react'
 import styled from 'styled-components'
-import Content, { ContentProps } from './Content'
-import ErrorPage, { ErrorPageProps } from './Error'
+import { ContentProps } from './Content'
+import { ErrorPageProps } from './Error'
+import loadable from '@loadable/component'
 
 export type AppProps = ErrorPageProps | ContentProps
 
 const App: React.FC<AppProps> = props => {
-  // TODO: test if loadable stuff even works
-  const PageContent = () => ('errorStatusCode' in props ? <ErrorPage {...props} /> : <Content {...props} />)
+  let PageContent: () => JSX.Element
+
+  if ('errorStatusCode' in props) {
+    const ErrorPage = loadable(() => import('./Error'))
+    PageContent = () => <ErrorPage {...props} />
+  } else {
+    const Content = loadable(() => import('./Content'))
+    PageContent = () => <Content {...props} />
+  }
 
   return (
     <Container>
