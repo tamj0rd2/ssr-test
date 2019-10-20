@@ -1,11 +1,10 @@
 import { RequestHandler } from 'express'
 import webpack from 'webpack'
 import config from '../../config/webpack.dev'
-import { resolveFromRoot } from '../helper'
 import { readFileSync } from 'fs'
+import privatePaths from '../../config/privatePaths'
 
-const getStats = (): object =>
-  JSON.parse(readFileSync(resolveFromRoot('dist', 'loadable-stats.json')).toString())
+const getStats = (): object => JSON.parse(readFileSync(privatePaths.stats).toString())
 
 const getProdMiddlewares = (): RequestHandler[] => {
   const stats = getStats()
@@ -35,7 +34,7 @@ const getDevMiddlewares = async (): Promise<RequestHandler[]> => {
     next()
   }
 
-  const clientRoot = resolveFromRoot('dist', 'client')
+  const clientRoot = privatePaths.clientDist
   const clientJsDecacheMiddleware: RequestHandler = (req, res, next) => {
     Object.keys(require.cache)
       .filter(mod => mod.startsWith(clientRoot))

@@ -1,12 +1,12 @@
 import express from 'express'
 import MarkupThingy from './markup-thingy'
-import { resolveFromRoot } from './helper'
 import createRouter from './middleware/router'
 import { readFileSync } from 'fs'
 import { resolve } from 'path'
 import App from '../client/App'
 import getWebpackMiddlewares from './middleware/webpack'
 import createErrorHandlers from './middleware/error-handling'
+import privatePaths from '../config/privatePaths'
 
 const configureApp = async (isDev: boolean) => {
   const app = express()
@@ -15,7 +15,7 @@ const configureApp = async (isDev: boolean) => {
   const webpackMiddlewares = await getWebpackMiddlewares(isDev)
   webpackMiddlewares.forEach(middleware => app.use(middleware))
 
-  app.use('/public', express.static(resolveFromRoot('dist', 'public'), { maxAge: '30d' }))
+  app.use('/public', express.static(privatePaths.public, { maxAge: '30d' }))
 
   const template = readFileSync(resolve(__dirname, 'template.html')).toString()
   const markupThingy = new MarkupThingy(

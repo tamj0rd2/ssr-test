@@ -1,17 +1,13 @@
-// TODO: add rules around this.
-// config can only import from itself
-// client should only ever import from itself or config
-// server can import from anything
-import { resolveFromRoot } from '../server/helper'
 import LoadablePlugin from '@loadable/webpack-plugin'
 import { Configuration } from 'webpack'
+import privatePaths from './privatePaths'
 
 const excludePattern = /node_modules/
 
 const config: Configuration = {
-  entry: [resolveFromRoot('src', 'client')],
+  entry: [privatePaths.clientSrc],
   output: {
-    path: resolveFromRoot('dist', 'public'),
+    path: privatePaths.public,
     filename: 'client.bundle.js',
     chunkFilename: '[name].chunk.js',
     publicPath: '/public/',
@@ -37,7 +33,7 @@ const config: Configuration = {
     new LoadablePlugin({
       outputAsset: false,
       writeToDisk: {
-        filename: resolveFromRoot('dist'),
+        filename: privatePaths.dist,
       },
     }),
   ],
