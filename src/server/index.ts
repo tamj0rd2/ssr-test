@@ -1,4 +1,4 @@
-import express, { ErrorRequestHandler } from 'express'
+import express from 'express'
 import MarkupThingy from './markup-thingy'
 import { resolveFromRoot } from './helper'
 import createRouter from './middleware/router'

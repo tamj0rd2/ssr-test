@@ -10,6 +10,6 @@ if [[ "$NODE_ENV" == 'production' ]];
         echo 'STARTING DEVELOPMENT'
         npx concurrently \
             'babel src/client --out-dir dist/client --extensions .ts,.tsx --source-maps inline --watch' \
-            'wait-on ./dist/server/index.js && node --inspect ./dist/server/index.js'
+            'wait-on ./dist/server/index.js && node -r source-map-support/register --inspect ./dist/server/index.js'
     };
 fi

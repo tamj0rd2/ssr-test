@@ -33,7 +33,6 @@ const config: webpack.Configuration = {
       chunks: 'all',
     },
   },
-  // TODO: can I make source maps point to the origin ts file?
   plugins: [
     new LoadablePlugin({
       outputAsset: false,
