@@ -4,7 +4,7 @@ import { ServerStyleSheet, StyleSheetManager } from 'styled-components'
 import { ChunkExtractor, ChunkExtractorManager } from '@loadable/server'
 import App, { AppProps } from '../client/App'
 
-class MarkupThingy {
+class AppMarkup {
   private readonly template: string
   private readonly getAppComponent: () => Promise<typeof App>
 
@@ -13,7 +13,7 @@ class MarkupThingy {
     this.getAppComponent = getAppComponent
   }
 
-  public async createAppMarkup(props: AppProps, stats: object) {
+  public async createHtml(props: AppProps, stats: object) {
     const AppComponent = await this.getAppComponent()
     const extractor = new ChunkExtractor({ stats })
     const sheet = new ServerStyleSheet()
@@ -32,22 +32,16 @@ class MarkupThingy {
 
     const html = this.template
       .replace('{title}', 'My super cool app')
-      .replace('{styles}', styleTags || '')
+      .replace('{styles}', styleTags)
       .replace('{reactRoot}', `<div id="root">${componentMarkup}</div>`)
       .replace(
         '{initialProps}',
-        this.createScriptTag(false, `window.__INITIAL_PROPS__ = ${JSON.stringify(props)}`),
+        `<script type="text/javascript">window.__INITIAL_PROPS__ = ${JSON.stringify(props)}</script>`,
       )
       .replace('{scripts}', scriptTags)
 
     return html
   }
-
-  private createScriptTag(isSrc: boolean, value: string): string {
-    return isSrc
-      ? `<script type="text/javascript" src="/public/${value}"></script>`
-      : `<script type="text/javascript">${value}</script>`
-  }
 }
 
-export default MarkupThingy
+export default AppMarkup

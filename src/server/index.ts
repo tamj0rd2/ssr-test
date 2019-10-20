@@ -1,5 +1,5 @@
 import express from 'express'
-import MarkupThingy from './markup-thingy'
+import AppMarkup from './app-markup'
 import createRouter from './middleware/router'
 import { readFileSync } from 'fs'
 import { resolve } from 'path'
@@ -18,7 +18,7 @@ const configureApp = async (isDev: boolean) => {
   app.use('/public', express.static(privatePaths.public, { maxAge: '30d' }))
 
   const template = readFileSync(resolve(__dirname, 'template.html')).toString()
-  const markupThingy = new MarkupThingy(
+  const markupThingy = new AppMarkup(
     template,
     isDev ? async () => (await import('../client/App')).default : async () => App,
   )

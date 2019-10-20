@@ -1,10 +1,10 @@
 import { ErrorRequestHandler, RequestHandler, Response, NextFunction } from 'express'
-import MarkupThingy from '../markup-thingy'
+import AppMarkup from '../app-markup'
 
-const createErrorHandlers = (markupThingy: MarkupThingy) => {
+const createErrorHandlers = (markupThingy: AppMarkup) => {
   const handleError = async (res: Response, next: NextFunction, errorStatusCode: number) => {
     try {
-      const markup = await markupThingy.createAppMarkup({ errorStatusCode }, res.locals.loadableStats)
+      const markup = await markupThingy.createHtml({ errorStatusCode }, res.locals.loadableStats)
       res.status(errorStatusCode).send(markup)
     } catch (e) {
       next(e)
