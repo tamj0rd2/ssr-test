@@ -6,6 +6,7 @@ import { readFileSync } from 'fs'
 import { resolve } from 'path'
 import App from '../client/App'
 import getWebpackMiddlewares from './middleware/webpack'
+import createErrorHandlers from './middleware/errors'
 
 const configureApp = async (isDev: boolean) => {
   const app = express()
@@ -24,19 +25,7 @@ const configureApp = async (isDev: boolean) => {
 
   app.use(createRouter(markupThingy))
 
-  app.use(<ErrorRequestHandler>async function(err, req, res, next) {
-    return res.headersSent
-      ? next(err)
-      : res
-          .status(500)
-          .send(await markupThingy.createAppMarkup({ errorStatusCode: 500 }, res.locals.loadableStats))
-  })
-
-  app.use(async (_, res) => {
-    res
-      .status(404)
-      .send(await markupThingy.createAppMarkup({ errorStatusCode: 404 }, res.locals.loadableStats))
-  })
+  createErrorHandlers(markupThingy).forEach(middleware => app.use(middleware))
 
   app.listen(port, () => console.log(`App listening on port ${port}`))
 }

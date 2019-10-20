@@ -5,6 +5,7 @@ import webpack from 'webpack'
 const config = merge(common, {
   mode: 'development',
   devtool: 'inline-source-map',
+  stats: 'minimal',
   entry: ['webpack-hot-middleware/client'],
   plugins: [new webpack.HotModuleReplacementPlugin(), new webpack.NoEmitOnErrorsPlugin()],
 })

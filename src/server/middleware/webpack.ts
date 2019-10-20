@@ -24,8 +24,8 @@ const getDevMiddlewares = async (): Promise<RequestHandler[]> => {
   const compiler = webpack(config)
 
   const devMiddleware = webpackDevMiddleware(compiler, {
-    publicPath: config!.output!.publicPath!,
-    serverSideRender: true,
+    publicPath: config.output!.publicPath!,
+    stats: config.stats,
   })
 
   const hotMiddleware = webpackHotMiddleware(compiler)

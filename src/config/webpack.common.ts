@@ -1,3 +1,7 @@
+// TODO: add rules around this.
+// config can only import from itself
+// client should only ever import from itself or config
+// server can import from anything
 import { resolveFromRoot } from '../server/helper'
 import webpack from 'webpack'
 import LoadablePlugin from '@loadable/webpack-plugin'
@@ -32,6 +36,7 @@ const config: webpack.Configuration = {
   // TODO: can I make source maps point to the origin ts file?
   plugins: [
     new LoadablePlugin({
+      outputAsset: false,
       writeToDisk: {
         filename: resolveFromRoot('dist'),
       },
