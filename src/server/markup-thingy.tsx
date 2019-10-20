@@ -1,6 +1,7 @@
 import React from 'react'
-import { ServerStyleSheet } from 'styled-components'
 import { renderToString } from 'react-dom/server'
+import { ServerStyleSheet, StyleSheetManager } from 'styled-components'
+import { ChunkExtractor, ChunkExtractorManager } from '@loadable/server'
 import App, { AppProps } from '../client/App'
 
 class MarkupThingy {
@@ -12,10 +13,20 @@ class MarkupThingy {
     this.getAppComponent = getAppComponent
   }
 
-  public async createAppMarkup(props: AppProps, scriptNames: string[] = []) {
-    const sheet = new ServerStyleSheet()
+  public async createAppMarkup(props: AppProps, stats: object) {
     const AppComponent = await this.getAppComponent()
-    const componentMarkup = renderToString(sheet.collectStyles(<AppComponent {...props} />))
+    const extractor = new ChunkExtractor({ stats })
+    const sheet = new ServerStyleSheet()
+
+    const componentMarkup = renderToString(
+      <ChunkExtractorManager extractor={extractor}>
+        <StyleSheetManager sheet={sheet.instance}>
+          <AppComponent {...props} />
+        </StyleSheetManager>
+      </ChunkExtractorManager>,
+    )
+
+    const scriptTags = extractor.getScriptTags()
     const styleTags = sheet.getStyleTags()
     sheet.seal()
 
@@ -27,8 +38,9 @@ class MarkupThingy {
         '{initialProps}',
         this.createScriptTag(false, `window.__INITIAL_PROPS__ = ${JSON.stringify(props)}`),
       )
-      // TODO: why isn't each bundle just require what it needs instead of making me add it myself?
-      .replace('{scripts}', scriptNames.map(name => this.createScriptTag(true, name)).join())
+      .replace('{scripts}', scriptTags)
+    // TODO: why isn't each bundle just require what it needs instead of making me add it myself?
+    // .replace('{scripts}', scriptNames.map(name => this.createScriptTag(true, name)).join())
 
     return html
   }

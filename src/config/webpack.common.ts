@@ -1,5 +1,6 @@
 import { resolveFromRoot } from '../server/helper'
 import webpack from 'webpack'
+import LoadablePlugin from '@loadable/webpack-plugin'
 
 const excludePattern = /node_modules/
 
@@ -28,6 +29,14 @@ const config: webpack.Configuration = {
       chunks: 'all',
     },
   },
+  // TODO: can I make source maps point to the origin ts file?
+  plugins: [
+    new LoadablePlugin({
+      writeToDisk: {
+        filename: resolveFromRoot('dist'),
+      },
+    }),
+  ],
 }
 
 export default config

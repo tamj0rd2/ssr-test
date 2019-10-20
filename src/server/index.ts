@@ -29,13 +29,13 @@ const configureApp = async (isDev: boolean) => {
       ? next(err)
       : res
           .status(500)
-          .send(await markupThingy.createAppMarkup({ errorStatusCode: 500 }, res.locals.bundlesToLoad))
+          .send(await markupThingy.createAppMarkup({ errorStatusCode: 500 }, res.locals.loadableStats))
   })
 
   app.use(async (_, res) => {
     res
       .status(404)
-      .send(await markupThingy.createAppMarkup({ errorStatusCode: 404 }, res.locals.bundlesToLoad))
+      .send(await markupThingy.createAppMarkup({ errorStatusCode: 404 }, res.locals.loadableStats))
   })
 
   app.listen(port, () => console.log(`App listening on port ${port}`))

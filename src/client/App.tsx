@@ -6,8 +6,8 @@ import ErrorPage, { ErrorPageProps } from './Error'
 export type AppProps = ErrorPageProps | ContentProps
 
 const App: React.FC<AppProps> = props => {
-  const PageContent = () =>
-    'errorStatusCode' in props ? <ErrorPage {...props} /> : <Content {...props} />
+  // TODO: test if loadable stuff even works
+  const PageContent = () => ('errorStatusCode' in props ? <ErrorPage {...props} /> : <Content {...props} />)
 
   return (
     <Container>

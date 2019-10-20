@@ -1,17 +1,16 @@
 import { RequestHandler } from 'express'
-import webpack, { Stats } from 'webpack'
+import webpack from 'webpack'
 import config from '../../config/webpack.dev'
 import { resolveFromRoot } from '../helper'
-import { readFileSync, readFile } from 'fs'
-import { Response } from 'express-serve-static-core'
+import { readFileSync } from 'fs'
+
+const getStats = (): object =>
+  JSON.parse(readFileSync(resolveFromRoot('dist', 'loadable-stats.json')).toString())
 
 const getProdMiddlewares = (): RequestHandler[] => {
-  const statsContent = readFileSync(resolveFromRoot('dist', 'public', 'stats.json')).toString()
-  const stats: Stats.ToJsonOutput = JSON.parse(statsContent)
-
+  const stats = getStats()
   const statsMiddleware: RequestHandler = (req, res, next) => {
-    // TODO: how can we get this to just give back the chunks our request/page requires?
-    res.locals.bundlesToLoad = Object.values(stats.assetsByChunkName as {})
+    res.locals.loadableStats = stats
     next()
   }
 
@@ -31,8 +30,8 @@ const getDevMiddlewares = async (): Promise<RequestHandler[]> => {
 
   const hotMiddleware = webpackHotMiddleware(compiler)
 
-  const statsMiddleware: RequestHandler = (req, res: Response, next) => {
-    res.locals.bundlesToLoad = Object.values(res.locals.webpackStats.toJson().assetsByChunkName)
+  const statsMiddleware: RequestHandler = (req, res, next) => {
+    res.locals.loadableStats = getStats()
     next()
   }
 
