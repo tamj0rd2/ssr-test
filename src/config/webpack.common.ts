@@ -3,12 +3,12 @@
 // client should only ever import from itself or config
 // server can import from anything
 import { resolveFromRoot } from '../server/helper'
-import webpack from 'webpack'
 import LoadablePlugin from '@loadable/webpack-plugin'
+import { Configuration } from 'webpack'
 
 const excludePattern = /node_modules/
 
-const config: webpack.Configuration = {
+const config: Configuration = {
   entry: [resolveFromRoot('src', 'client')],
   output: {
     path: resolveFromRoot('dist', 'public'),
