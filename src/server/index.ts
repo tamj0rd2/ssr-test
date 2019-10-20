@@ -6,7 +6,7 @@ import { readFileSync } from 'fs'
 import { resolve } from 'path'
 import App from '../client/App'
 import getWebpackMiddlewares from './middleware/webpack'
-import createErrorHandlers from './middleware/errors'
+import createErrorHandlers from './middleware/error-handling'
 
 const configureApp = async (isDev: boolean) => {
   const app = express()
