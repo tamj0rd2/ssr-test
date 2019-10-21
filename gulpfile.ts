@@ -2,6 +2,7 @@ import del from 'del'
 import { series, parallel, TaskFunction, src, dest, watch } from 'gulp'
 import babel from 'gulp-babel'
 import sourcemaps from 'gulp-sourcemaps'
+import mapSources from '@gulp-sourcemaps/map-sources'
 import { spawn } from 'child_process'
 import webpack from 'webpack'
 import prodConfig from './src/config/webpack.prod'
@@ -39,12 +40,12 @@ const buildBundles: TaskFunction = cb => {
 
 export const build = series(clean, parallel(copyHtml, transpileTs, buildBundles))
 
-// TODO: fix client sourcemaps when attached to process
 const transpileTsDev = (globs: string[], destination: string) =>
   src(globs)
     .pipe(sourcemaps.init())
     .pipe(babel())
-    .pipe(sourcemaps.write())
+    .pipe(mapSources(sourcePath => '../../src/' + sourcePath))
+    .pipe(sourcemaps.write('.'))
     .pipe(dest(destination))
 
 const buildDev: TaskFunction = cb => {

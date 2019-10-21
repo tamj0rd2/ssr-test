@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
     "moduleResolution": "node",
-    "typeRoots": ["node_modules/@types"],
+    "typeRoots": ["node_modules/@types", "./types"],
     "rootDir": "./",
+    "baseUrl": "./",
     "jsx": "preserve",
     "strict": true,
     "noImplicitAny": true,
@@ -12,6 +13,6 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "include": ["./**/*.ts", "./**/*.tsx"],
+  "exclude": ["node_modules", "dist"]
 }
