@@ -1,6 +1,4 @@
 import { RequestHandler } from 'express'
-import webpack from 'webpack'
-import config from '../../config/webpack.dev'
 import { readFileSync } from 'fs'
 import privatePaths from '../../config/privatePaths'
 
@@ -17,8 +15,10 @@ const getProdMiddlewares = (): RequestHandler[] => {
 }
 
 const getDevMiddlewares = async (): Promise<RequestHandler[]> => {
+  const { default: webpack } = await import('webpack')
   const { default: webpackDevMiddleware } = await import('webpack-dev-middleware')
   const { default: webpackHotMiddleware } = await import('webpack-hot-middleware')
+  const { default: config } = await import('../../config/webpack.dev')
 
   const compiler = webpack(config)
 

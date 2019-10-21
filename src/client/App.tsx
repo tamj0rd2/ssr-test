@@ -9,12 +9,12 @@ export type AppProps = ErrorPageProps | ContentProps
 const App: React.FC<AppProps> = props => {
   let PageContent: () => JSX.Element
 
-  if ('errorStatusCode' in props) {
+  if ((props as ErrorPageProps).errorStatusCode) {
     const ErrorPage = loadable(() => import('./Error'))
-    PageContent = () => <ErrorPage {...props} />
+    PageContent = () => <ErrorPage {...(props as ErrorPageProps)} />
   } else {
     const Content = loadable(() => import('./Content'))
-    PageContent = () => <Content {...props} />
+    PageContent = () => <Content {...(props as ContentProps)} />
   }
 
   return (
