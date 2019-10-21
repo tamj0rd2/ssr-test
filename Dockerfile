@@ -10,6 +10,7 @@ RUN yarn install && yarn cache clean
 FROM install as test
 
 COPY tsconfig.json .babelrc prettier.config.js gulpfile.ts ./
+COPY types ./types
 COPY src ./src
 
 FROM test as build
